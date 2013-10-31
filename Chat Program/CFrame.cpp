@@ -17,7 +17,7 @@ BEGIN_EVENT_TABLE(CFrame, wxFrame)
 	EVT_BUTTON(ID_Enter, CFrame::OnSend)
 END_EVENT_TABLE()
 
-CFrame::CFrame() : wxFrame(NULL, -1, L"Chat!", wxPoint(20, 20), wxSize(600, 400)), mClient(this),
+CFrame::CFrame() : wxFrame(NULL, -1, L"LULZ Mike I totally hacked your computer, I'm a 7331 haxxor skills", wxPoint(20, 20), wxSize(600, 400)), mClient(this),
 	mReceiveThread(&mClient)
 {
 	// File Menu
