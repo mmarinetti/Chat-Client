@@ -25,6 +25,7 @@ class CFrame;
 
 #define BUFLEN 256
 
+//Client Class
 class CClient
 {
 public:
