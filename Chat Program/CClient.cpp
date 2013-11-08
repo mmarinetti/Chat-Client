@@ -58,7 +58,7 @@ bool CClient::Connect()
 void CClient::Send_Message(char message[256])
 {
 	strncpy(mSendPacket.message, message, 256);
-	memset(mSendPacket.username, 0, 256);
+	strncpy(mSendPacket.username, mUser, 256);
     bytes_sent = send(tcp_connection_fd, &mSendPacket, sizeof(mSendPacket), 0);
 
     if(bytes_sent < 0)
@@ -72,16 +72,17 @@ void CClient::Send_Message(char message[256])
     }
 }
 
-void CClient::ReceiveMessages()
+wxString CClient::ReceiveMessages()
 {
-	//char recv_buf[256];
-	while(true)
+	bytes_received = 0;
+	while(bytes_received <= 0)
 	{
-		//memset(recv_buf, 0, sizeof(recv_buf));
 		bytes_received = recv(tcp_connection_fd, &mReceivePacket, sizeof(mReceivePacket), 0);
-
-		cout << "Received: " << mReceivePacket.message << endl;
 	}
+
+	wxString msg(mReceivePacket.message, wxConvUTF8);
+	wxString usr(mReceivePacket.username, wxConvUTF8);
+	return usr + L": " + msg + L"\n";
 }
 
 void CClient::Close()

@@ -7,18 +7,21 @@
 #include <sstream>
 #include <iostream>
 #include <string.h>
+#include <signal.h>
 
 #include "CFrame.h"
 #include "CConnectDlg.h"
+#include "CRecvThread.h"
 
 BEGIN_EVENT_TABLE(CFrame, wxFrame)
 	EVT_MENU(ID_Exit, CFrame::OnExit)
 	EVT_MENU(ID_Connect, CFrame::OnConnect)
 	EVT_BUTTON(ID_Enter, CFrame::OnSend)
+	EVT_COMMAND(MESSAGE_UPDATE_ID, wxEVT_COMMAND_TEXT_UPDATED, CFrame::SetTextBox)
 END_EVENT_TABLE()
 
-CFrame::CFrame() : wxFrame(NULL, -1, L"LULZ Mike I totally hacked your computer, I'm a 7331 haxxor skills", wxPoint(20, 20), wxSize(600, 400)), mClient(this),
-	mReceiveThread(&mClient)
+CFrame::CFrame() : wxFrame(NULL, -1, L"LULZ Mike I totally hacked your computer, I'm a 7331 haxxor skills", wxPoint(20, 20), wxSize(600, 400)), mClient(this)
+	//mReceiveThread(&mClient)
 {
 	// File Menu
 
@@ -53,8 +56,8 @@ CFrame::CFrame() : wxFrame(NULL, -1, L"LULZ Mike I totally hacked your computer,
 	vSizer->Add(chatSizer, 0, wxALL | wxEXPAND);
 
 	std::wstringstream str1;
-	mChatBox = new wxTextCtrl( this, ID_Chat, str1.str().c_str(), wxPoint(0, 0), wxSize(600, 280), wxALIGN_RIGHT );
-	mChatBox->SetEditable(false);
+	mChatBox = new wxTextCtrl( this, ID_Chat, str1.str().c_str(), wxPoint(0, 0), wxSize(600, 280), wxTE_READONLY | wxTE_MULTILINE );
+	//mChatBox->SetEditable(false);
 	chatSizer->Add( mChatBox, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL);
 
 	//Type box
@@ -88,7 +91,7 @@ CFrame::~CFrame()
  */
 void CFrame::OnExit(wxCommandEvent& event)
 {
-	mReceiveThread.WaitForInternalThreadToExit();
+	//mReceiveThread.WaitForInternalThreadToExit();
 	mClient.Close();
 	Close(TRUE);
 }
@@ -100,7 +103,7 @@ void CFrame::OnConnect(wxCommandEvent& event)
 
 	if(mClient.isConnected()) {mEnterButton->Enable(true);}
 
-	mReceiveThread.StartInternalThread();
+	//mReceiveThread.StartInternalThread();
 }
 
 void CFrame::OnSend(wxCommandEvent& event)
@@ -113,13 +116,17 @@ void CFrame::OnSend(wxCommandEvent& event)
 		return;
 	}
 
-	//std::string m = std::string(message);
 	mClient.Send_Message(message);
 	mMessage->Clear();
 }
 
-void CFrame::AddtoTextBox(char *t)
+void CFrame::SetTextBox(wxCommandEvent& event)
 {
-
+	mChatBox->Freeze();
+    mChatBox->AppendText(event.GetString());
+    mChatBox->ScrollLines(2);
+    mChatBox->ShowPosition(mChatBox->GetLastPosition());
+    mChatBox->Thaw();
+    Refresh();
 }
 

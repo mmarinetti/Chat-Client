@@ -35,6 +35,13 @@ wxDialog(parent, wxID_ANY, L"Connect",
 	mServerIp->SetFocus();
 	gSizer->Add( mServerIp, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL);
 
+	wxStaticText *label2 = new wxStaticText( this, wxID_ANY, L"Username:", wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
+	gSizer->Add( label2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL);
+
+	std::wstringstream str3;
+	mUsername = new wxTextCtrl( this, ID_Username, str3.str().c_str(), wxDefaultPosition, wxDefaultSize, 0 );
+	gSizer->Add( mUsername, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL);
+
 	// Create a horizontal sizer that will hold the Ok and Cancel buttons
 	// and add it to the vertical sizer
 	wxBoxSizer *hSizer;
@@ -43,10 +50,10 @@ wxDialog(parent, wxID_ANY, L"Connect",
 
 	mCloseButton = new wxButton( this, ID_Close, L"Close", wxDefaultPosition, wxDefaultSize, 0 );
 	hSizer->Add(mCloseButton, 1, wxALL | wxEXPAND);
-	mCloseButton->SetDefault();
 
 	mConnectButton = new wxButton(this, ID_Connect, L"Connect", wxDefaultPosition, wxDefaultSize, 0);
 	hSizer->Add(mConnectButton, 1, wxALL | wxEXPAND);
+	mConnectButton->SetDefault();
 
 	// Set the top level sizer and force the window to match the size
 	this->SetSizer( vSizer );
@@ -70,7 +77,9 @@ void CConnectDlg::OnCloseButton(wxCommandEvent &event)
 void CConnectDlg::OnConnectButton(wxCommandEvent &event)
 {
 	char ip[128];
+	char usr[256];
 	strncpy(ip, (const char*)mServerIp->GetValue().mb_str(), 127);
+	strncpy(usr, (const char*)mUsername->GetValue().mb_str(), 255);
 	if(ip == NULL || mServerIp <= 0)
 	{
 		mServerIp->SetFocus();
@@ -78,6 +87,7 @@ void CConnectDlg::OnConnectButton(wxCommandEvent &event)
 	}
 
 	mClient->SetServerName(ip);
+	mClient->SetUsername(usr);
 	mClient->Connect();
 	EndModal(wxOK);
 }

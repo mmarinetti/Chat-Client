@@ -20,7 +20,7 @@ public:
 	virtual ~CConnectDlg();
 
 	//! Id values for our controls
-	enum Ids {ID_Close, ID_Connect, ID_ServerIp};
+	enum Ids {ID_Close, ID_Connect, ID_ServerIp, ID_Username};
 
 	// Don't put anything between this line and the next
 	// private, protected, or public
@@ -37,6 +37,8 @@ private:
 	wxButton *mCloseButton;
 
 	wxTextCtrl *mServerIp;
+
+	wxTextCtrl *mUsername;
 
 	//! Frame this Animation Player is associated with
 	CFrame *mFrame;

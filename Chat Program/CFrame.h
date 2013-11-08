@@ -13,7 +13,7 @@
 #include <wx/wx.h>
 
 #include "CClient.h"
-#include "CThreadRecv.h"
+//#include "CThreadRecv.h"
 
 class CFrame : public wxFrame
 {
@@ -22,6 +22,8 @@ public:
 	CFrame(const CFrame &orig);
 	virtual ~CFrame();
 
+	CClient *GetClient() {return &mClient;}
+
 	DECLARE_EVENT_TABLE()
 
 	enum Ids {ID_Exit=1, ID_Connect, ID_ChatBox, ID_Enter, ID_Chat};
@@ -29,7 +31,7 @@ public:
 	void OnExit(wxCommandEvent& event);
 	void OnConnect(wxCommandEvent& event);
 	void OnSend(wxCommandEvent& event);
-	void AddtoTextBox(char *t);
+	void SetTextBox(wxCommandEvent& event);
 
 private:
 	CClient mClient;
@@ -41,7 +43,7 @@ private:
 
 	wxTextCtrl *mChatBox;
 
-	CThreadRecv mReceiveThread;
+	//CThreadRecv mReceiveThread;
 };
 
 #endif /* CFRAME_H_ */

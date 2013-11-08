@@ -10,7 +10,7 @@
 #ifndef CCLIENT_H_
 #define CCLIENT_H_
 
-class CFrame;
+#include <wx/wx.h>
 
 #include <cstdio>
 #include <cstdlib>
@@ -23,6 +23,8 @@ class CFrame;
 #include <unistd.h>
 #include <string.h>
 
+class CFrame;
+
 #define BUFLEN 256
 
 //Client Class
@@ -34,10 +36,11 @@ public:
 
 	bool Connect();
 	void Send_Message(char message[256]);
-	void ReceiveMessages();
+	wxString ReceiveMessages();
 	void Close();
 
 	void SetServerName(char *name) {tcp_server_name_str = name;}
+	void SetUsername(char usr[256]) {strncpy(mUser, usr, 255);}
 
 	bool isConnected() {return mConnected;}
 
@@ -62,6 +65,7 @@ private:
 
     packet mSendPacket;
     packet mReceivePacket;
+    char mUser[256];
 };
 
 #endif /* CCLIENT_H_ */
