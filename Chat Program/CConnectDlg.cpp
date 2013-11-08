@@ -32,14 +32,15 @@ wxDialog(parent, wxID_ANY, L"Connect",
 
 	std::wstringstream str2;
 	mServerIp = new wxTextCtrl( this, ID_ServerIp, str2.str().c_str(), wxDefaultPosition, wxDefaultSize, 0 );
-	mServerIp->SetFocus();
 	gSizer->Add( mServerIp, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL);
+	mServerIp->ChangeValue(L"127.0.0.1");
 
 	wxStaticText *label2 = new wxStaticText( this, wxID_ANY, L"Username:", wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
 	gSizer->Add( label2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL);
 
 	std::wstringstream str3;
 	mUsername = new wxTextCtrl( this, ID_Username, str3.str().c_str(), wxDefaultPosition, wxDefaultSize, 0 );
+	mUsername->SetFocus();
 	gSizer->Add( mUsername, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL);
 
 	// Create a horizontal sizer that will hold the Ok and Cancel buttons

@@ -123,7 +123,11 @@ void CFrame::OnSend(wxCommandEvent& event)
 void CFrame::SetTextBox(wxCommandEvent& event)
 {
 	mChatBox->Freeze();
-    mChatBox->AppendText(event.GetString());
+	wxDateTime time = wxDateTime::Now();
+	wxString hour = time.Format(wxT("%I"), wxDateTime::EST);
+	wxString min = time.Format(wxT("%M"), wxDateTime::EST);
+	wxString sec = time.Format(wxT("%S"), wxDateTime::EST);
+    mChatBox->AppendText(L"<"+hour+L":"+min+L":"+sec+L">"+event.GetString());
     mChatBox->ScrollLines(2);
     mChatBox->ShowPosition(mChatBox->GetLastPosition());
     mChatBox->Thaw();
